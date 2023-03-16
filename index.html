@@ -122,7 +122,8 @@
             perfectly straight road would have an efficiency of 100%.</p>
     
             <p>When performing calculations, data was limited to primary and secondary roads, which are 
-            shown in red on the map.</p>
+            shown in <span style="font-weight:700;color:#ff0a0a">red</span> on the map. All other roads
+            are shown in <span style="font-weight:700;color:#0088ff">blue</span>.</p>
         </div>
         <div id="legend">
             <div id="key-row"></div>
@@ -284,18 +285,19 @@
                 // create legend
                 // define layer names
                 const layers = [
-                "Curviest",
+                "Straightest",
                 "",
                 "",
                 "",
-                "Straightest"
+                "Curviest"
                 ];
                 const colors = [
-                            '#341648',
-                            '#62205f',
-                            '#bb292c',
-                            '#ef8737',
-                            '#ffd353'
+                    '#ffd353',
+                    '#ef8737',
+                    '#bb292c',
+                    '#62205f',
+                    '#341648',
+
                 ];
                 const legendKey = document.getElementById('key-row');
                 const legendLabel = document.getElementById('label-row');
