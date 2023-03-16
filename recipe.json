@@ -1,0 +1,10 @@
+{
+"version": 1,
+"layers": {
+"data-5fcdeo": {
+"source": "mapbox://mrpecners.427duuxn",
+"minzoom": 0,
+"maxzoom": 20
+}
+}
+}
