@@ -5,6 +5,7 @@
         <title>Find the US counties with the curviest roads</title>
         <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
         <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&display=swap" rel="stylesheet">
         <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet">
@@ -28,6 +29,15 @@
             }
             @media only screen and (max-width: 800px) {
                 .map-overlay {width: 97%;}
+            }
+
+            .overlay-title {
+                margin-top: 5px;
+                margin-bottom: 5px;
+                margin-left: auto;
+                margin-right: auto;
+                font-size: 26px;
+                font-weight: 700;
             }
 
             #legend {
@@ -72,6 +82,16 @@
                 padding-bottom: 10px;
             }
 
+            #info {
+                float: right;
+                margin-right: 10px;
+            }
+
+            #info:hover {
+                cursor: pointer;
+                text-shadow: 0px 0px 10px black;;
+            }
+
             /* #legend:hover .legend-row{
                 opacity: .25;
                 cursor: pointer;
@@ -86,16 +106,23 @@
 <body>
     <div id="map"></div>
     <div class='map-overlay'>
+        <div id="info" onclick="showInfo()">
+            <i class="fa fa-info-circle" style="font-size:24px;color:#ef8737;"></i>
+        </div>
+        <div class='overlay-title'>Where are the curviest roads?</div>
         <div>
             <strong>Place: </strong><span id='place'></span>
         </div>
         <div>
             <strong>Road Effciency: </strong><span id='eff'></span>
         </div>
-        <div class="explainer">
-            Road efficiency here is defined as the quotient of the straight-line distance
+        <div class="explainer" id="explainer" style="display:none;">
+            <p>Road efficiency here is defined as the quotient of the straight-line distance
             between the start and end points of the road divided by the actual length of the road. A
-            perfectly straight road would have an efficiency of 100%.
+            perfectly straight road would have an efficiency of 100%.</p>
+    
+            <p>When performing calculations, data was limited to primary and secondary roads, which are 
+            shown in red on the map.</p>
         </div>
         <div id="legend">
             <div id="key-row"></div>
@@ -103,6 +130,17 @@
         </div>
     </div>
         <script>
+            // Handle info click
+            function showInfo() {
+                var e = document.getElementById('explainer');
+                // console.log(e.style.display);
+                if (e.style.display === "none") {
+                    e.style.display = "block";
+                } else {
+                    e.style.display = "none";
+                }
+            }
+
             // Target the span elements used in the sidebar
             const placeDisplay = document.getElementById('place');
             const effDisplay = document.getElementById('eff');
