@@ -171,16 +171,6 @@
                     .1
                 ]);
 
-                map.addLayer({
-                    'id': 'county-center',
-                    'type': 'circle',
-                    'source': 'centers',
-                    'layout': {},
-                    'paint': {
-                        'circle-radius': 0
-                    }
-                });
-
                 map.on('mousemove', 'county-fills', (e) => {
                     map.getCanvas().style.cursor = 'pointer';
 
