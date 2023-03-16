@@ -1,10 +1,10 @@
 {
-"version": 1,
-"layers": {
-"data-5fcdeo": {
-"source": "mapbox://mrpecners.427duuxn",
-"minzoom": 0,
-"maxzoom": 20
-}
-}
+  "version": 1,
+  "layers": {
+    "counties": {
+      "source": "mapbox://tileset-source/mrpecners/road-efficiency-source",
+      "minzoom": 0,
+      "maxzoom": 14
+    }
+  }
 }

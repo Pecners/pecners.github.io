@@ -4,15 +4,17 @@
         <meta charset="utf-8">
         <title>Find the US counties with the curviest roads</title>
         <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&display=swap" rel="stylesheet">
         <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet">
         <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js'></script>
         <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
         <style>
-            body { margin: 0; padding: 0; }
+            body { margin: 0; padding: 0; font-family: 'EB Garamond', serif;}
             #map { position: absolute; top: 0; bottom: 0; width: 100%; }
             .map-overlay {
                 position: absolute;
-                font-family: sans-serif;
                 margin-top: 5px;
                 margin-left: 5px;
                 padding: 5px;
@@ -24,12 +26,24 @@
                 background-color: #ffffffd9;
                 border-radius: 3px;
             }
+            @media only screen and (max-width: 800px) {
+                .map-overlay {width: 97%;}
+            }
 
             #legend {
-                font-size: 12px;
-                padding: 10px;
+                font-size: 14px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                margin:auto;
                 line-height: 18px;
-                width: 90%;
+                width: 98%;
+                display: flex;
+                flex-direction: column;
+            }
+
+            #label-row {
+                display: flex;
+                justify-content: space-between;
             }
 
             .legend-key {
@@ -53,7 +67,7 @@
 
             .explainer {
                 line-height: 1.25;
-                font-size: 14px;
+                font-size: 16px;
                 padding-top: 10px;
                 padding-bottom: 10px;
             }
@@ -83,7 +97,10 @@
             between the start and end points of the road divided by the actual length of the road. A
             perfectly straight road would have an efficiency of 100%.
         </div>
-        <div id="legend"></div>
+        <div id="legend">
+            <div id="key-row"></div>
+            <div id="label-row"></div>
+        </div>
     </div>
         <script>
             // Target the span elements used in the sidebar
@@ -109,7 +126,7 @@
                 // Add a data source containing GeoJSON data.
                 map.addSource('counties', {
                 type: 'vector',
-                url: 'mapbox://mrpecners.427duuxn'
+                url: 'mapbox://mrpecners.road-efficiency-tiles'
                 });
             
                 // Add a new layer to visualize the polygon.
@@ -117,7 +134,7 @@
                     'id': 'county-fills', // name for this fill layer
                     'type': 'fill',
                     'source': 'counties', // reference the data source
-                    'source-layer': 'data-5fcdeo',
+                    'source-layer': 'counties',
                     'layout': {},
                     'paint': {
                         'fill-color': [
@@ -142,7 +159,7 @@
                     'id': 'county-outline',
                     'type': 'line',
                     'source': 'counties',
-                    'source-layer': 'data-5fcdeo',
+                    'source-layer': 'counties',
                     'layout': {},
                     'paint': {
                         'line-color': [ // link fill-opacity to feature-state
@@ -183,7 +200,7 @@
                         if (hoveredStateId !== null) {
                             map.setFeatureState(
                                 { source: 'counties', 
-                                'source-layer': 'data-5fcdeo',
+                                sourceLayer: 'counties',
                                 id: hoveredStateId },
                                 { hover: false }
                                 );
@@ -191,7 +208,7 @@
                         hoveredStateId = e.features[0].id;
                         map.setFeatureState(
                             { source: 'counties', 
-                            'source-layer': 'data-5fcdeo',
+                            sourceLayer: 'counties',
                             id: hoveredStateId },
                             { hover: true }
                             );
@@ -211,7 +228,7 @@
                     if (hoveredStateId !== null) {
                         map.setFeatureState(
                             { source: 'counties', 
-                            'source-layer': 'data-5fcdeo',
+                            sourceLayer: 'counties',
                             id: hoveredStateId },
                             { hover: false }
                         );
@@ -242,7 +259,8 @@
                             '#ef8737',
                             '#ffd353'
                 ];
-                const legend = document.getElementById('legend');
+                const legendKey = document.getElementById('key-row');
+                const legendLabel = document.getElementById('label-row');
 
                 layers.forEach((layer, i) => {
                     const color = colors[i];
@@ -253,18 +271,15 @@
                     item.className = 'legend-row';
 
                     item.appendChild(key);
-                    legend.appendChild(item);
+                    legendKey.appendChild(item);
 
                 });
 
                 layers.forEach((layer) => {
-                    const item = document.createElement('div');
                     const value = document.createElement('span');
-                    item.className = 'key-label';
                     value.innerHTML = `${layer}`;
 
-                    item.appendChild(value)
-                    legend.appendChild(item);
+                    legendLabel.appendChild(value);
                 });
 
             });
